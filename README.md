@@ -19,15 +19,15 @@ Make yourself admin:
 ```sql
 update public.profiles set role = 'admin' where id = (select id from auth.users where email = 'YOU@EXAMPLE.COM');
 ```
-**Cloudflare** (Worker name must equal `name` in `wrangler.jsonc`: `i-soaworkerhub`) → Settings → Variables and secrets:
+**Cloudflare** (Worker name must equal `name` in `wrangler.jsonc`: `isoa-workhub`) → Settings → Variables and secrets:
 
 | Name | Type | Notes |
 |---|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL` | Variable (Build + Runtime) | `NEXT_PUBLIC_SITE_URL=https://i-soaworkerhub.isoa.workers.dev` |
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL` | Variable (Build + Runtime) | `NEXT_PUBLIC_SITE_URL=https://isoa-workhub.isoa.workers.dev` |
 | `BREVO_API_KEY`, `MAIL_FROM` | **Secret** | Brevo → SMTP & API → API keys; verify `MAIL_FROM` as a sender in Brevo |
 | `NOWPAYMENTS_API_KEY`, `NOWPAYMENTS_EMAIL`, `NOWPAYMENTS_PASSWORD` | **Secret** | NOWPayments dashboard; enable 2FA; fund the custody balance |
 
-**Supabase → Authentication → URL Configuration:** Site URL = `https://i-soaworkerhub.isoa.workers.dev`, Redirect URLs: `https://i-soaworkerhub.isoa.workers.dev/**` and `http://localhost:3000/**`.
+**Supabase → Authentication → URL Configuration:** Site URL = `https://isoa-workhub.isoa.workers.dev`, Redirect URLs: `https://isoa-workhub.isoa.workers.dev/**` and `http://localhost:3000/**`.
 
 ## Security
 Authorization is enforced by Postgres RLS + guard triggers. Offers are visible only to admin and the assigned freelancer; invitation tokens are 122-bit random and expire in 14 days; payouts are created only by `approve_submission()` and only an admin can start one (atomic status claim prevents double payouts); crypto API secrets live only in Cloudflare secrets; Zod validation, https-only URLs, DB-backed rate limits and security headers are on.

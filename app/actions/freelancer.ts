@@ -61,3 +61,11 @@ export async function submitWork(fd: FormData) {
   if (error) back(path, "error", "submit_failed");
   back(path, "msg", "work_submitted");
 }
+
+export async function markNotificationsRead() {
+  const path = "/dashboard/notifications";
+  const { sb, user } = await requireUser(path);
+  await sb.from("notifications").update({ read_at: new Date().toISOString() }).eq("user_id", user.id).is("read_at", null);
+  revalidatePath("/", "layout");
+  back(path, "msg", "saved");
+}

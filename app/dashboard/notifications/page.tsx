@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { markNotificationsRead } from "@/app/actions/dashboard";
+import { markNotificationsRead } from "@/app/actions/freelancer";
 import { Flash } from "@/components/Flash";
 import { requireUser } from "@/lib/auth";
 import { getT } from "@/lib/i18n";
