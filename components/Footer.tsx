@@ -13,8 +13,8 @@ export function Footer({ t }: { t: T }) {
         <div className="text-sm">
           <p className="mb-2 font-semibold text-navy">{t("footer.platform")}</p>
           <ul className="space-y-1.5 text-muted">
-            <li><Link href="/opportunities" className="hover:text-accent">{t("nav.opportunities")}</Link></li>
-            <li><Link href="/freelancers" className="hover:text-accent">{t("nav.freelancers")}</Link></li>
+            <li><Link href="/" className="hover:text-accent">{t("nav.home")}</Link></li>
+            <li><Link href="/register" className="hover:text-accent">{t("nav.register")}</Link></li>
             <li><Link href="/safety" className="hover:text-accent">{t("nav.safety")}</Link></li>
           </ul>
         </div>

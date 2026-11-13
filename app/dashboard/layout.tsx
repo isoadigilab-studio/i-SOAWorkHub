@@ -6,26 +6,16 @@ import { getT } from "@/lib/i18n";
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { profile } = await requireUser();
   const { t } = await getT();
-  const common = [
+  const links = [
     { href: "/dashboard", icon: "dashboard", label: t("nav.dashboard") },
+    { href: "/dashboard/tasks", icon: "briefcase", label: t("dash.tasks") },
+    { href: "/dashboard/wallet", icon: "shield", label: t("dash.wallet") },
+    { href: "/dashboard/notifications", icon: "bell", label: t("dash.notifications") },
     { href: "/dashboard/profile", icon: "user", label: t("dash.profile") },
+    ...(profile.role === "admin" ? [{ href: "/admin", icon: "shield", label: "Admin" }] : []),
   ];
-  const byRole: Record<string, { href: string; icon: string; label: string }[]> = {
-    freelancer: [
-      { href: "/dashboard/saved", icon: "bookmark", label: t("dash.saved") },
-      { href: "/dashboard/applications", icon: "briefcase", label: t("dash.applications") },
-      { href: "/dashboard/inquiries", icon: "mail", label: t("dash.inquiries") },
-    ],
-    client: [
-      { href: "/dashboard/opportunities", icon: "briefcase", label: t("dash.my_opportunities") },
-      { href: "/dashboard/inquiries", icon: "mail", label: t("dash.inquiries") },
-      { href: "/dashboard/saved", icon: "bookmark", label: t("dash.saved") },
-    ],
-    admin: [{ href: "/admin", icon: "shield", label: "Admin" }],
-  };
-  const links = [...common, ...(byRole[profile.role] ?? []), { href: "/dashboard/notifications", icon: "bell", label: t("dash.notifications") }];
   return (
-    <div className="mx-auto grid max-w-6xl gap-6 px-4 py-6 md:grid-cols-[220px_1fr]">
+    <div className="mx-auto grid max-w-5xl gap-6 px-4 py-6 md:grid-cols-[220px_1fr]">
       <aside className="hidden md:block">
         <nav className="card space-y-1 p-3" aria-label="Dashboard">
           {links.map((l) => (

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { signUp } from "@/app/actions/auth";
 import { Flash } from "@/components/Flash";
 import { getT } from "@/lib/i18n";
+import { safeNext } from "@/lib/utils";
 
 export const metadata = { title: "Register" };
 
@@ -16,6 +17,7 @@ export default async function RegisterPage({ searchParams }: { searchParams: Pro
         <Flash sp={sp} />
       </div>
       <form action={signUp} className="card space-y-4">
+        <input type="hidden" name="next" value={safeNext(sp.next)} />
         <div>
           <label className="label" htmlFor="full_name">{t("auth.full_name")}</label>
           <input className="input" id="full_name" name="full_name" required minLength={2} maxLength={120} autoComplete="name" />
@@ -29,20 +31,9 @@ export default async function RegisterPage({ searchParams }: { searchParams: Pro
           <input className="input" id="password" name="password" type="password" required minLength={10} autoComplete="new-password" />
           <p className="mt-1 text-xs text-muted">{t("auth.password_hint")}</p>
         </div>
-        <fieldset>
-          <legend className="label">{t("auth.i_am")}</legend>
-          <div className="grid grid-cols-2 gap-2">
-            <label className="flex min-h-[44px] cursor-pointer items-center gap-2 rounded-xl border border-line px-3 text-sm has-[:checked]:border-accent has-[:checked]:bg-orange-50">
-              <input type="radio" name="role" value="freelancer" defaultChecked /> {t("auth.role_freelancer")}
-            </label>
-            <label className="flex min-h-[44px] cursor-pointer items-center gap-2 rounded-xl border border-line px-3 text-sm has-[:checked]:border-accent has-[:checked]:bg-orange-50">
-              <input type="radio" name="role" value="client" /> {t("auth.role_client")}
-            </label>
-          </div>
-        </fieldset>
         <button className="btn btn-primary w-full">{t("nav.register")}</button>
         <p className="text-center text-sm text-muted">
-          {t("auth.have_account")} <Link href="/login" className="text-accent hover:underline">{t("nav.login")}</Link>
+          {t("auth.have_account")} <Link href={`/login?next=${encodeURIComponent(safeNext(sp.next))}`} className="text-accent hover:underline">{t("nav.login")}</Link>
         </p>
       </form>
     </div>

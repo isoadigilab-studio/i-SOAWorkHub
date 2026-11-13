@@ -1,64 +1,39 @@
 # i-SOA WorkHub — Connect. Work. Grow.
 
-Online-work platform: opportunities, freelancer marketplace, role-based dashboards (freelancer / client / admin), moderation, reports, audit logs. Languages: Malagasy, French, English.
+i-SOA DigiLab publishes paid missions (design, development, social media…). Freelancers are **invited by email** with a private link, accept a mission, deliver a URL, and are paid their share in **USDT** via NOWPayments.
+Split per mission: **50% i-SOA · 40% freelancer · 10% fees** (stored per mission in `offer_finance`; the freelancer never sees the client price, only their own amount).
 
-**Stack:** Next.js 15 (App Router) · TypeScript · Tailwind · Supabase (Postgres + Auth + RLS) · Zod · Cloudflare Workers (OpenNext) · GitHub Actions.
+**Stack:** Next.js 15 · TypeScript · Tailwind · Supabase (Postgres/Auth/RLS) · Cloudflare Workers (OpenNext) · Brevo (invitation emails) · NOWPayments (crypto payouts).
 
-> Honest status: this code was written without being able to run `npm install` / `next build` in the authoring environment. Run the CI once (step 4) and fix anything it reports before going live. Features marked "not included" at the bottom are not implemented.
+## Flow
+1. Admin → **Offers**: create a mission (client price in USD) and publish it.
+2. Admin → **Invite by email**: paste emails; each gets a private link `/i/<token>`.
+3. Freelancer opens the link → creates account / logs in → adds a wallet (Wallet page) → **Accept** (first come, first served).
+4. Freelancer submits a URL to the finished work.
+5. Admin → **Review**: Approve (creates the payout row) or Reject with feedback.
+6. Admin → **Payouts**: **1 · Create payout**, then **2 · enter the 2FA code** (required by NOWPayments) → status updates to Paid with the TX hash.
 
-## 1. Supabase (one time)
-1. Create a project at supabase.com. Note the **Project ref**, **URL**, **anon key**, **database password**.
-2. **Authentication → Providers → Email**: keep "Confirm email" ON (email verification).
-3. **Authentication → URL Configuration**: Site URL = your production URL; add Redirect URLs: `https://YOUR-DOMAIN/auth/callback` and `http://localhost:3000/auth/callback`.
-4. For real email delivery at volume, set a custom SMTP under Authentication → SMTP (the built-in sender is rate-limited).
-5. Migrations are applied automatically by GitHub Actions (step 3). Optional DEMO listings: paste `supabase/seed.sql` in the SQL editor (they are flagged DEMO, have no owner, cannot receive applications).
-
-## 2. Create the first admin
-Register normally on the site and verify the email, then in Supabase → SQL editor:
+## Setup (once)
+**Supabase SQL Editor**: run, in order, `supabase/migrations/20261112000001_schema.sql`, `…000002_seed_reference_data.sql`, `20261113000001_offers_v3.sql` (skip the ones already run).
+Make yourself admin:
 ```sql
-update public.profiles set role = 'admin'
-where id = (select id from auth.users where email = 'YOU@EXAMPLE.COM');
+update public.profiles set role = 'admin' where id = (select id from auth.users where email = 'YOU@EXAMPLE.COM');
 ```
-Nobody can become admin from the website; role changes by non-admins are ignored by a database trigger.
+**Cloudflare** (Worker name must equal `name` in `wrangler.jsonc`: `i-soaworkerhub`) → Settings → Variables and secrets:
 
-## 3. GitHub → Cloudflare + Supabase automation
-Create a repo, push this folder to `main`. In **Settings → Secrets and variables → Actions** add:
+| Name | Type | Notes |
+|---|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL` | Variable (Build + Runtime) | `NEXT_PUBLIC_SITE_URL=https://i-soaworkerhub.isoa.workers.dev` |
+| `BREVO_API_KEY`, `MAIL_FROM` | **Secret** | Brevo → SMTP & API → API keys; verify `MAIL_FROM` as a sender in Brevo |
+| `NOWPAYMENTS_API_KEY`, `NOWPAYMENTS_EMAIL`, `NOWPAYMENTS_PASSWORD` | **Secret** | NOWPayments dashboard; enable 2FA; fund the custody balance |
 
-| Secret | Where to find it |
-|---|---|
-| `SUPABASE_ACCESS_TOKEN` | supabase.com → Account → Access Tokens |
-| `SUPABASE_DB_PASSWORD` | the DB password you set at project creation |
-| `SUPABASE_PROJECT_REF` | Project Settings → General |
-| `NEXT_PUBLIC_SUPABASE_URL` | Project Settings → API |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Project Settings → API (anon/public key) |
-| `NEXT_PUBLIC_SITE_URL` | your final URL, e.g. `https://workhub.example.com` |
-| `CLOUDFLARE_API_TOKEN` | Cloudflare → My Profile → API Tokens → template "Edit Cloudflare Workers" |
-| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare dashboard → Workers & Pages (right side) |
+**Supabase → Authentication → URL Configuration:** Site URL = `https://i-soaworkerhub.isoa.workers.dev`, Redirect URLs: `https://i-soaworkerhub.isoa.workers.dev/**` and `http://localhost:3000/**`.
 
-Every push to `main` then: applies new SQL migrations to Supabase → typechecks → runs tests → builds → deploys the Worker `isoa-workhub`. Pull requests/branches run CI only (`.github/workflows/ci.yml`).
-Never use the Supabase **service_role** key in this project; it is not needed (all access goes through Row Level Security).
+## Security
+Authorization is enforced by Postgres RLS + guard triggers. Offers are visible only to admin and the assigned freelancer; invitation tokens are 122-bit random and expire in 14 days; payouts are created only by `approve_submission()` and only an admin can start one (atomic status claim prevents double payouts); crypto API secrets live only in Cloudflare secrets; Zod validation, https-only URLs, DB-backed rate limits and security headers are on.
 
-## 4. First run checklist
-1. Push → open the **Actions** tab. Fix anything the typecheck/build reports.
-2. Cloudflare → Workers & Pages → `isoa-workhub` → Settings → Domains: attach your custom domain.
-3. Cloudflare → Security → WAF → Rate limiting rules: add a rule on `/login`, `/register`, `/forgot-password` (outer layer on top of the in-app limiter).
-4. Test: register a client + a freelancer (two emails), post an opportunity, approve it as admin, apply, check notifications.
-
-## Local development
-```bash
-cp .env.example .env.local   # fill with your Supabase values
-npm install
-npm run dev                  # http://localhost:3000
-npm test
-npm run preview              # run the Cloudflare build locally
-```
-
-## Security design
-- Authorization is enforced in Postgres (RLS policies + guard triggers), not only in the UI. Clients cannot self-publish, freelancers cannot change application status, nobody can self-promote to admin.
-- Server-side Zod validation on every action; http(s)-only URLs; open-redirect protection; account-enumeration-safe password reset.
-- DB-backed rate limiting (login, register, reset, apply, report, inquiry, create opportunity) + security headers.
-- Admin actions are written to `admin_audit_logs`. Suspicious opportunities can be reported by any signed-in user.
-- No payments, no recruitment fees, no guaranteed income claims. Demo seed data is labelled DEMO.
-
-## Not included yet (be aware)
-Opportunity editing after creation (create/close/delete only), file uploads (portfolios are links), platform-settings page, MFA for admin (enable in Supabase when available on your plan), automated end-to-end browser tests, and a Content-Security-Policy header.
+## Notes / limits
+- NOWPayments payouts require JWT + a 2FA code each time; this app creates the payout and asks you for the code. Verify endpoint details against NOWPayments docs if their API changes.
+- Payouts are sent in the amount shown (USDT = USD 1:1). Network fees depend on your NOWPayments settings (the 10% "fees" bucket is meant to cover them).
+- Payment *from clients* to i-SOA is not automated here (record it yourself before publishing a mission).
+- Typecheck/build were not run in the authoring environment: check the Cloudflare build log after pushing.

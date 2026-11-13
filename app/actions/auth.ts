@@ -27,14 +27,15 @@ export async function signUp(fd: FormData) {
   }
   const sb = await createClient();
   if (!(await limit(sb, "register", 5, 3600))) back("/register", "error", "too_many");
-  const { full_name, email, password, role } = parsed.data;
+  const { full_name, email, password } = parsed.data;
+  const next = safeNext(fd.get("next"));
   const { error } = await sb.auth.signUp({
     email,
     password,
-    options: { data: { full_name, role }, emailRedirectTo: `${site()}/auth/callback?next=/dashboard` },
+    options: { data: { full_name }, emailRedirectTo: `${site()}/auth/callback?next=${encodeURIComponent(next)}` },
   });
   if (error) back("/register", "error", "register_failed");
-  back("/login", "msg", "check_email");
+  back(`/login?next=${encodeURIComponent(next)}`, "msg", "check_email");
 }
 
 export async function signOut() {

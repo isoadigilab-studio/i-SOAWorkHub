@@ -5,8 +5,7 @@ import { setLocale } from "@/app/actions/locale";
 
 export function Header({ t, locale, profile }: { t: T; locale: Locale; profile: any | null }) {
   const nav = [
-    { href: "/opportunities", label: t("nav.opportunities") },
-    { href: "/freelancers", label: t("nav.freelancers") },
+    { href: "/", label: t("nav.home") },
     { href: "/safety", label: t("nav.safety") },
   ];
   const lang = (

@@ -11,27 +11,36 @@ async function n(sb: any, table: string, build?: (q: any) => any) {
 
 export default async function AdminHome() {
   const { sb } = await requireRole("admin", "/admin");
-  const [users, freelancers, clients, published, pending, openReports, apps, inquiries] = await Promise.all([
-    n(sb, "profiles"),
+  const [freelancers, open, assigned, submitted, pendingPayouts] = await Promise.all([
     n(sb, "profiles", (q) => q.eq("role", "freelancer")),
-    n(sb, "profiles", (q) => q.eq("role", "client")),
-    n(sb, "opportunities", (q) => q.eq("status", "published")),
-    n(sb, "opportunities", (q) => q.eq("status", "pending")),
-    n(sb, "reports", (q) => q.eq("status", "open")),
-    n(sb, "applications"),
-    n(sb, "project_inquiries"),
+    n(sb, "offers", (q) => q.eq("status", "open")),
+    n(sb, "offers", (q) => q.eq("status", "assigned")),
+    n(sb, "submissions", (q) => q.eq("status", "submitted")),
+    n(sb, "payouts", (q) => q.in("status", ["pending", "created", "processing"])),
   ]);
-  const cards = [
-    ["Users", users], ["Freelancers", freelancers], ["Clients", clients], ["Published opportunities", published],
-    ["Awaiting moderation", pending], ["Open reports", openReports], ["Applications", apps], ["Inquiries", inquiries],
+  const { data: fin } = await sb
+    .from("offer_finance")
+    .select("price_usd,platform_amount,fees_amount,freelancer_amount,offers!inner(status)")
+    .in("offers.status", ["approved", "paid"])
+    .limit(1000);
+  const sum = (k: string) => (fin ?? []).reduce((a: number, r: any) => a + Number(r[k]), 0).toFixed(2);
+  const cards: [string, string | number][] = [
+    ["Freelancers", freelancers],
+    ["Open offers", open],
+    ["In progress", assigned],
+    ["To review", submitted],
+    ["Payouts to handle", pendingPayouts],
+    ["Total value (approved)", `${sum("price_usd")} USD`],
+    ["i-SOA share (50%)", `${sum("platform_amount")} USD`],
+    ["Fees (10%)", `${sum("fees_amount")} USD`],
   ];
   return (
     <div>
-      <h1 className="text-2xl">Platform statistics</h1>
+      <h1 className="text-2xl">Overview</h1>
       <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
         {cards.map(([label, value]) => (
-          <div key={label as string} className="card">
-            <p className="text-2xl font-bold text-navy">{value as number}</p>
+          <div key={label} className="card">
+            <p className="text-xl font-bold text-navy">{value}</p>
             <p className="text-sm text-muted">{label}</p>
           </div>
         ))}
