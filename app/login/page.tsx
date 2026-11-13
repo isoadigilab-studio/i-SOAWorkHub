@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { signIn } from "@/app/actions/auth";
 import { Flash } from "@/components/Flash";
 import { getT } from "@/lib/i18n";
 import { safeNext } from "@/lib/utils";
@@ -15,7 +14,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
       <div className="mt-4">
         <Flash sp={sp} />
       </div>
-      <form action={signIn} className="card space-y-4">
+      <form action="/auth/login" method="post" className="card space-y-4">
         <input type="hidden" name="next" value={safeNext(sp.next)} />
         <div>
           <label className="label" htmlFor="email">{t("auth.email")}</label>

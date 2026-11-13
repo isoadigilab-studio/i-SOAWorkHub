@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Icon, Logo } from "@/components/icons";
 import { LOCALES, type Locale, type T } from "@/lib/i18n";
 import { setLocale } from "@/app/actions/locale";
-import { signOut } from "@/app/actions/auth";
 
 export function Header({ t, locale, profile }: { t: T; locale: Locale; profile: any | null }) {
   const nav = [
@@ -48,7 +47,7 @@ export function Header({ t, locale, profile }: { t: T; locale: Locale; profile: 
               <Link href="/dashboard" className="btn btn-ghost">
                 {t("nav.dashboard")}
               </Link>
-              <form action={signOut}>
+              <form action="/auth/signout" method="post">
                 <button className="btn btn-navy">{t("nav.logout")}</button>
               </form>
             </>
@@ -80,7 +79,7 @@ export function Header({ t, locale, profile }: { t: T; locale: Locale; profile: 
                 <Link href="/dashboard" className="btn btn-ghost w-full">
                   {t("nav.dashboard")}
                 </Link>
-                <form action={signOut}>
+                <form action="/auth/signout" method="post">
                   <button className="btn btn-navy w-full">{t("nav.logout")}</button>
                 </form>
               </>
