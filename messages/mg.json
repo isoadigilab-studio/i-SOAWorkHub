@@ -5,35 +5,42 @@
   "dashboard": "Tabilao",
   "login": "Hiditra",
   "logout": "Hivoaka",
-  "register": "Hisoratra anarana"
+  "register": "Hisoratra anarana",
+  "tasks": "Tâche",
+  "search": "Recherche",
+  "history": "History",
+  "wallet": "Wallet"
  },
  "footer": {
-  "about": "Asa an-tserasera navoakan'i-SOA DigiLab ho an'ny freelance nasaina.",
+  "about": "Asa sy fandoavana amin'ny ISC manerana ny tambajotra i-SOA.",
   "platform": "Sehatra",
   "notice_title": "Zava-dehibe",
-  "notice": "Tsy mamela toky asa na vola miditra i-SOA WorkHub. Tsy mandoa na inona na inona ianao raha handray anjara. Ny fandoavana dia amin'ny USDT aorian'ny fankatoavana ny asanao."
+  "notice": "Tsy mamela toky asa na vola miditra i-SOA WorkHub. Tsy mandoa na inona na inona ianao raha handray anjara. Ny tombony dia voaloa amin'ny ISC; ny fanalana (retrait) amin'ny crypto aorian'ny fanamarinana ny maha-izy anao."
  },
  "common": {
   "save": "Tehirizo",
-  "view": "Jereo"
+  "view": "Jereo",
+  "all": "Rehetra",
+  "cancel": "Foano",
+  "view_all": "Jereo rehetra"
  },
  "home": {
-  "hero_title": "Miasà an-tserasera miaraka amin'i-SOA DigiLab. Voaloa amin'ny USDT.",
-  "hero_sub": "Mamoaka asa momba ny design, développement ary tambajotra sosialy izahay. Mahazo fanasana amin'ny mailaka ianao, manaiky ny asa, mandefa ny vokatra, ary mahazo ny anjaranao amin'ny crypto.",
+  "hero_title": "Mitadiava asa. Alefaso. Mahazoa ISC.",
+  "hero_sub": "Jereo ny asa avy amin'i-SOA DigiLab, alefaso ny vokatra, ary mahazoa ISC, ny vola amin'ny wallet manerana ny tambajotra i-SOA.",
   "cta_join": "Hamorona kaonty",
   "how": "Ahoana no fiasany",
-  "step1_title": "Mahazoa fanasana",
-  "step1_text": "Alefanay amin'ny mailaka ny rohy manokana ho an'ny asa.",
-  "step2_title": "Manaiky ny asa",
-  "step2_text": "Sokafy ny rohy, jereo ny karama, ary ekeo.",
+  "step1_title": "Mitadiava asa",
+  "step1_text": "Jereo ny asa misokatra na sokafy ny rohy manokana ao amin'ny mailaka fanasana.",
+  "step2_title": "Raiso",
+  "step2_text": "Jereo ny karama amin'ny ISC ary ekeo ny asa.",
   "step3_title": "Alefaso ny vokatra",
   "step3_text": "Alefaso aminay ny rohy mitondra ny asa vita.",
-  "step4_title": "Voaloa amin'ny USDT",
-  "step4_text": "Aorian'ny fankatoavana, alefa any amin'ny wallet crypto-nao ny anjaranao.",
+  "step4_title": "Voaloa amin'ny ISC",
+  "step4_text": "Aorian'ny fankatoavana, miditra ao amin'ny wallet i-SOA ny karamanao. Alao amin'ny crypto rehefa tianao.",
   "split_title": "Fizarana mazava sy ara-drariny",
-  "split_text": "Isaky ny asa: 50% i-SOA DigiLab, 40% ho an'ny freelance, 10% sarany. Hitanao mazava ny vola azonao alohan'ny hanekena.",
+  "split_text": "Isaky ny asa: 50% i-SOA DigiLab, 40% ho an'ny freelance, 10% sarany. Hitanao mazava ny karamanao amin'ny ISC alohan'ny hanekena.",
   "trust_title": "Fitokisana sy fiarovana",
-  "trust_text": "Tsy mangataka vola aminao mihitsy izahay. Fantaro ny fomba hamantarana ny hosoka sy hiarovana ny walletnao."
+  "trust_text": "Tsy mangataka vola aminao mihitsy izahay. Ny fanamarinana ny maha-izy anao no miaro ny fanalana. Fantaro ny fomba hamantarana ny hosoka."
  },
  "safety": {
   "title": "Fitokisana sy fiarovana",
@@ -94,7 +101,29 @@
   "payout_api_error": "NOWPayments refused the payout (see the error under the payout).",
   "payout_created_enter_2fa": "Payout created. Now enter the 2FA code to confirm it.",
   "payout_verify_failed": "2FA verification failed (see the error under the payout).",
-  "payout_processing": "Payout confirmed and processing."
+  "payout_processing": "Payout confirmed and processing.",
+  "kyc_failed": "Tsy afaka nandefa. Andramo indray.",
+  "kyc_files_missing": "Ampio ny taratasy ilaina.",
+  "kyc_not_allowed": "Efa eo am-pamarinana na voamarina ny anao.",
+  "kyc_submitted": "Nalefa ny taratasy. Hojerenay.",
+  "merchant_key_created": "Voaforona ny fanalahidin'ny mpivarotra (aseho indray mandeha any ambany).",
+  "ticket_created": "Voaforona ny ticket. Adikao izao.",
+  "insufficient_funds": "Tsy ampy ny solde ISC.",
+  "recipient_not_found": "Tsy hita ny ID wallet handray.",
+  "self_transfer": "Tsy afaka mandefa ISC amin'ny tenanao ianao.",
+  "invalid_amount": "Tsy mety ny vola (4 decimal farafahabetsany).",
+  "invalid_key": "Avereno ny pejy dia andramo indray.",
+  "product_not_found": "Tsy misy ny vokatra na serivisy.",
+  "kyc_required": "Ilaina aloha ny fanamarinana ny maha-izy anao (KYC).",
+  "below_minimum": "0.02 ISC ny retrait minimum.",
+  "too_many_open": "Efa misy retrait 3 eo am-pandehanana.",
+  "transfer_done": "Nalefa ny transfert.",
+  "payment_done": "Vita ny fandoavana.",
+  "ticket_cancelled": "Nofoanana ny ticket, naverina ny ISC.",
+  "withdraw_requested": "Nangatahina ny retrait. Voatana ny ISC mandra-pandoavana.",
+  "withdraw_cancelled": "Nofoanana ny retrait, naverina ny ISC.",
+  "file_too_large": "Lehibe loatra ny rakitra (4 Mo farafahabetsany).",
+  "file_type": "Tsy ekena ity karazana rakitra ity (JPG, PNG, WebP na PDF)."
  },
  "dash": {
   "welcome": "Tonga soa",
@@ -109,14 +138,23 @@
   "wallet_missing": "Ampidiro ny wallet crypto-nao mba ahafahana mandray asa",
   "none_tasks": "Tsy mbola misy asa. Sokafy ny rohy ao amin'ny mailaka fanasana.",
   "none_notifications": "Tsy misy fampandrenesana.",
-  "mark_read": "Atao voavaky rehetra"
+  "mark_read": "Atao voavaky rehetra",
+  "browse": "Jereo ny asa",
+  "completed": "Vita",
+  "hero_text": "Jereo ny asa misokatra, ekeo izay mifanaraka aminao, alefaso ny vokatra ary mahazoa ISC.",
+  "hero_title": "Mitadiava asa. Alefaso. Mahazoa ISC.",
+  "in_review": "Hojerena",
+  "kyc_banner": "Hamarino ny maha-izy anao (KYC) mba ahafahanao mandray ny ISC-nao.",
+  "no_open": "Tsy misy asa misokatra ankehitriny. Jereo ny mailaka fanasana.",
+  "recommended": "Asa soso-kevitra",
+  "settings": "Fandrindrana"
  },
  "invite": {
   "reward": "Ny karamanao",
   "share": "Ny anjaranao",
   "deadline": "Daty farany",
   "description": "Asa",
-  "no_fee": "Tsy misy vola mba aloanao mihitsy. Voaloa amin'ny USDT ianao aorian'ny fankatoavana ny asanao.",
+  "no_fee": "Tsy misy vola mba aloanao mihitsy. Miditra ao amin'ny wallet amin'ny ISC ny karamanao aorian'ny fankatoavana ny asanao.",
   "create_account": "Mamoròna kaonty mba hanaiky",
   "accept": "Raiso ity asa ity"
  },
@@ -127,7 +165,10 @@
   "note": "Fanamarihana (tsy tsy maintsy)",
   "submit": "Alefaso ny asa",
   "waiting_review": "Miandry fanamarinana ny asanao.",
-  "history": "Ny vokatra nalefa"
+  "history": "Ny vokatra nalefa",
+  "mine": "Ny asako",
+  "open": "Asa misokatra",
+  "paid": "Voamarina. Voatafiditra ao amin'ny wallet ISC-nao ny karamanao."
  },
  "wallet": {
   "help": "Ampidiro ny adiresy publika izay hahazoanao USDT.",
@@ -154,7 +195,7 @@
   "assigned": "Mandeha",
   "submitted": "Hojerena",
   "approved": "Voamarina",
-  "paid": "Voaloa",
+  "paid": "Voatafiditra",
   "cancelled": "Nofoanana"
  },
  "sub_status": {
@@ -173,6 +214,118 @@
  "notif": {
   "submission_approved": "Voamarina ny asanao",
   "submission_rejected": "Mila fanitsiana ny asanao",
-  "payout_finished": "Nalefa tany amin'ny walletnao ny vola"
+  "payout_finished": "Nalefa tany amin'ny walletnao ny vola",
+  "kyc_approved": "Voamarina ny maha-izy anao",
+  "kyc_rejected": "Nolavina ny fanamarinana",
+  "withdrawal_paid": "Voaloa ny retrait",
+  "withdrawal_failed": "Tsy nahomby ny retrait, naverina ny vola"
+ },
+ "history": {
+  "legacy": "Fandoavana USDT taloha",
+  "none": "Tsy mbola misy hetsika.",
+  "submission": "Nalefa ny asa"
+ },
+ "search": {
+  "hint": "Soraty ny teny fanalahidy na fidio ny sokajy. Ny asa azonao jerena ihany no karohina.",
+  "none": "Tsy nahita.",
+  "placeholder": "Hikaroka asa, fahaizana…"
+ },
+ "settings": {
+  "language": "Fiteny"
+ },
+ "opp": {
+  "category": "Sokajy"
+ },
+ "kyc": {
+  "approved": "Voamarina ny maha-izy anao. Afaka mandray ny ISC-nao ianao.",
+  "back": "Taratasy — ao ambadika (raha misy)",
+  "country": "Firenena",
+  "doc_type": "Karazana taratasy",
+  "driver_license": "Fahazoan-dalana mpamily",
+  "front": "Taratasy — eo aloha",
+  "help": "Ny ekipanay no manamarina tanana ny taratasinao. Voatahiry manokana ny rakitra ary ampiasaina amin'ny fanamarinana ihany. JPG, PNG, WebP na PDF, 4 Mo farafahabetsany.",
+  "legal_name": "Anarana ara-dalàna feno",
+  "national_id": "Karatra nasionaly (CIN)",
+  "passport": "Pasipaoro",
+  "pending": "Eo am-pamarinana ny taratasinao. Horaisina fampandrenesana ianao.",
+  "selfie": "Selfie mitazona ny taratasy",
+  "submit": "Alefaso hohamarinina"
+ },
+ "kyc_status": {
+  "none": "Tsy mbola voamarina",
+  "pending": "Hojerena",
+  "approved": "Voamarina",
+  "rejected": "Nolavina"
+ },
+ "ledger": {
+  "earning": "Karama asa",
+  "transfer_out": "Transfert nalefa",
+  "transfer_in": "Transfert voaray",
+  "payment": "Fandoavana",
+  "ticket_hold": "Ticket voatana",
+  "ticket_release": "Ticket navotsotra",
+  "ticket_payment": "Ticket voaloa",
+  "withdrawal_hold": "Retrait nangatahina",
+  "withdrawal_release": "Retrait naverina",
+  "withdrawal_paid": "Retrait voaloa",
+  "adjustment": "Fanitsiana"
+ },
+ "ticket_status": {
+  "open": "Misokatra",
+  "redeemed": "Nampiasaina",
+  "expired": "Lany daty",
+  "cancelled": "Nofoanana"
+ },
+ "wd_status": {
+  "requested": "Nangatahina",
+  "processing": "Eo am-pandefasana",
+  "paid": "Voaloa",
+  "failed": "Tsy nahomby",
+  "cancelled": "Nofoanana"
+ },
+ "w": {
+  "tab_overview": "Accueil",
+  "tab_transfer": "Transfert",
+  "tab_payment": "Paiement",
+  "tab_ticket": "Ticket",
+  "tab_withdraw": "Retrait",
+  "tab_history": "Historique",
+  "address": "Adiresy wallet handraisana",
+  "amount": "Vola (ISC)",
+  "available": "Misy",
+  "balance": "Solde azo ampiasaina",
+  "confirm_transfer": "Hamarino ny transfert",
+  "earned": "Azo",
+  "expires": "Lany daty afaka",
+  "gen_ticket": "Mamorona ticket",
+  "held": "Voatana",
+  "indicative": "sanda manondro fotsiny, tsy fampanantenana sanda ara-tsena",
+  "kyc_go": "Hamarino ny maha-izy ahy",
+  "kyc_needed": "Ilaina ny fanamarinana ny maha-izy anao (KYC) alohan'ny retrait voalohany.",
+  "kyc_status": "Toe-javatra",
+  "min_withdraw": "Retrait minimum",
+  "my_id": "ID wallet-ko",
+  "my_tickets": "Ny ticket-ko",
+  "my_wd": "Ny retrait-ko",
+  "network": "Tambajotra fandoavana i-SOA",
+  "network_label": "Réseau",
+  "no_products": "Tsy mbola misy vokatra.",
+  "note": "Fanamarihana (tsy tsy maintsy)",
+  "pay_help": "Mandoa abonnement na entana amin'ny solde ISC-nao.",
+  "pay_now": "Mandoa amin'ny ISC",
+  "pending_wd": "retrait eo am-pandehanana",
+  "product": "Serivisy / Vokatra",
+  "purpose": "Antony / commande",
+  "recent": "Transaction farany",
+  "recipient": "ID wallet handray",
+  "request_wd": "Mangataka retrait",
+  "service": "Serivisy",
+  "ticket_help": "Tazony ny ISC ao anaty ticket ampiasaina indray mandeha, mifamatotra amin'ny serivisy, antony ary daty fiafarana. Raha tsy ampiasaina dia miverina ny ISC.",
+  "ticket_help2": "Omeo ity kaody ity ny serivisy i-SOA rehefa mandoa. Izy no mandray azy server-to-server; tsy azo ampiasaina indroa.",
+  "ticket_once": "Ny ticket-nao (aseho indray mandeha — adikao izao)",
+  "transfer_help": "Alefaso amin'ny kaonty WorkHub hafa ny ISC. Tsy misy crypto na blockchain.",
+  "wd_amount": "Vola halaina (ISC)",
+  "wd_help": "Esorina ao amin'ny wallet-nao ny ISC ary aloa amin'ny USDT amin'ny NOWPayments aorian'ny fankatoavan'ny admin. Farafahakeliny 0.02 ISC ($2).",
+  "wd_warning": "Hamarino tsara ny adiresy sy ny réseau. Tsy azo averina ny fandoavana crypto."
  }
 }

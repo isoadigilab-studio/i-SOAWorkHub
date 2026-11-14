@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { parseIsc } from "./isc";
 
 const empty = (v: unknown) => (typeof v === "string" && v.trim() === "" ? undefined : v);
 
@@ -51,14 +52,9 @@ export const forgotSchema = z.object({ email: z.string().trim().toLowerCase().em
 export const passwordSchema = z.object({ password: z.string().min(10, "password_short").max(200) });
 export const profileSchema = z.object({ display_name: z.string().trim().min(2).max(120) });
 
-export const walletSchema = z
-  .object({
-    wallet_network: z.enum(["usdttrc20", "usdtbsc", "usdtmatic"]),
-    wallet_address: z.string().trim().min(20).max(120),
-  })
-  .refine((v) => validWalletAddress(v.wallet_network, v.wallet_address), { message: "wallet_invalid" });
 
 export const offerSchema = z.object({
+  visibility: z.enum(["invite", "open"]).default("invite"),
   title: z.string().trim().min(5).max(140),
   category: z.enum(CATEGORIES),
   description: z.string().trim().min(20).max(5000),
@@ -97,4 +93,45 @@ export const reviewSchema = z.object({
 export const verifyCodeSchema = z.object({
   id: z.string().uuid(),
   code: z.string().trim().regex(/^\d{4,10}$/),
+});
+
+const iscAmount = z.string().trim().refine((v) => parseIsc(v) !== null, "invalid_amount");
+const idemKey = z.string().trim().min(8).max(64).regex(/^[A-Za-z0-9_-]+$/);
+
+export const transferSchema = z.object({
+  to_code: z.string().trim().toUpperCase().regex(/^ISC-[A-Z0-9]{10}$/),
+  amount: iscAmount,
+  note: optStr(100),
+  key: idemKey,
+});
+export const paySchema = z.object({ product_id: z.string().uuid(), key: idemKey });
+export const ticketSchema = z.object({
+  service_code: z.string().regex(/^[a-z0-9_-]{2,40}$/),
+  purpose: z.string().trim().min(3).max(80),
+  amount: iscAmount,
+  minutes: z.coerce.number().int().refine((n) => [15, 60, 1440, 4320].includes(n)),
+  key: idemKey,
+});
+export const withdrawSchema = z
+  .object({
+    amount: iscAmount,
+    network: z.enum(["usdttrc20", "usdtbsc", "usdtmatic"]),
+    address: z.string().trim().min(20).max(120),
+    key: idemKey,
+  })
+  .refine((v) => validWalletAddress(v.network, v.address), { message: "wallet_invalid" });
+export const kycSchema = z.object({
+  legal_name: z.string().trim().min(2).max(120),
+  country: z.string().trim().min(2).max(80),
+  doc_type: z.enum(["national_id", "passport", "driver_license"]),
+});
+export const serviceSchema = z.object({
+  code: z.string().trim().toLowerCase().regex(/^[a-z0-9_-]{2,40}$/),
+  name: z.string().trim().min(2).max(80),
+  description: optStr(300),
+});
+export const productSchema = z.object({
+  service_code: z.string().regex(/^[a-z0-9_-]{2,40}$/),
+  name: z.string().trim().min(2).max(100),
+  price_isc: iscAmount,
 });

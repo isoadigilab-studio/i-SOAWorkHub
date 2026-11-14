@@ -6,20 +6,27 @@ import { getSession } from "@/lib/auth";
 export default async function Home() {
   const { t } = await getT();
   const { profile } = await getSession();
-  const steps = [1, 2, 3, 4];
+  const steps = [
+    { n: 1, icon: "search" },
+    { n: 2, icon: "tasks" },
+    { n: 3, icon: "upload" },
+    { n: 4, icon: "wallet" },
+  ];
   return (
     <>
-      <section className="bg-navy text-white">
-        <div className="mx-auto max-w-4xl px-4 py-14 md:py-20">
-          <h1 className="text-4xl leading-tight !text-white md:text-5xl">{t("home.hero_title")}</h1>
-          <p className="mt-4 max-w-xl text-slate-200">{t("home.hero_sub")}</p>
+      <section className="relative overflow-hidden border-b border-line">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_80%_at_80%_0%,rgba(232,189,98,0.12),transparent)]" />
+        <div className="relative mx-auto max-w-4xl px-4 py-16 md:py-24">
+          <p className="tag mb-4 !text-gold">i-SOA DigiLab</p>
+          <h1 className="max-w-2xl text-4xl leading-tight md:text-5xl">{t("home.hero_title")}</h1>
+          <p className="mt-4 max-w-xl text-muted">{t("home.hero_sub")}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             {profile ? (
-              <Link href={profile.role === "admin" ? "/admin" : "/dashboard/tasks"} className="btn btn-primary">{t("nav.dashboard")}</Link>
+              <Link href="/dashboard" className="btn btn-primary">{t("nav.dashboard")}</Link>
             ) : (
               <>
                 <Link href="/register" className="btn btn-primary">{t("home.cta_join")}</Link>
-                <Link href="/login" className="btn border border-white/30 text-white hover:bg-white/10">{t("nav.login")}</Link>
+                <Link href="/login" className="btn btn-ghost">{t("nav.login")}</Link>
               </>
             )}
           </div>
@@ -29,17 +36,20 @@ export default async function Home() {
       <section className="mx-auto max-w-4xl px-4 pt-12">
         <h2 className="mb-5 text-2xl">{t("home.how")}</h2>
         <ol className="grid gap-4 sm:grid-cols-2">
-          {steps.map((n) => (
-            <li key={n} className="card">
-              <h3 className="text-base">{t(`home.step${n}_title`)}</h3>
-              <p className="mt-1 text-sm text-muted">{t(`home.step${n}_text`)}</p>
+          {steps.map((s) => (
+            <li key={s.n} className="card flex gap-4">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold"><Icon name={s.icon} /></span>
+              <div>
+                <h3 className="text-base">{t(`home.step${s.n}_title`)}</h3>
+                <p className="mt-1 text-sm text-muted">{t(`home.step${s.n}_text`)}</p>
+              </div>
             </li>
           ))}
         </ol>
       </section>
 
-      <section className="mx-auto max-w-4xl px-4 pt-12">
-        <div className="card border-orange-200 bg-orange-50/60">
+      <section className="mx-auto max-w-4xl px-4 pt-6">
+        <div className="gold-card">
           <h2 className="text-xl">{t("home.split_title")}</h2>
           <p className="mt-1 text-sm text-muted">{t("home.split_text")}</p>
         </div>
@@ -47,7 +57,7 @@ export default async function Home() {
 
       <section className="mx-auto max-w-4xl px-4 pt-6">
         <div className="card flex flex-col gap-3 md:flex-row md:items-center">
-          <Icon name="shield" className="h-8 w-8 shrink-0 text-accent" />
+          <Icon name="shieldcheck" className="h-8 w-8 shrink-0 text-gold" />
           <div className="flex-1">
             <h2 className="text-xl">{t("home.trust_title")}</h2>
             <p className="mt-1 text-sm text-muted">{t("home.trust_text")}</p>

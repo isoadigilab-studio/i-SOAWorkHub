@@ -22,12 +22,12 @@ export default async function NotificationsPage({ searchParams }: { searchParams
       {(data ?? []).length === 0 ? <p className="card text-sm text-muted">{t("dash.none_notifications")}</p> : (
         <ul className="space-y-2">
           {(data ?? []).map((n: any) => (
-            <li key={n.id} className={`card !p-4 ${n.read_at ? "" : "border-accent/40 bg-orange-50/40"}`}>
-              <p className="text-sm font-semibold text-navy">{t(`notif.${n.type}`, n.type)}</p>
+            <li key={n.id} className={`card !p-4 ${n.read_at ? "" : "border-gold/40 bg-gold/5"}`}>
+              <p className="text-sm font-semibold text-ink">{t(`notif.${n.type}`, n.type)}</p>
               <p className="text-sm text-muted">{n.body}</p>
               <div className="mt-1 flex items-center justify-between text-xs text-muted">
                 <span>{formatDate(n.created_at, locale)}</span>
-                {n.link && <Link href={n.link} className="font-semibold text-accent">{t("common.view")} →</Link>}
+                {n.link && <Link href={n.link} className="font-semibold text-gold">{t("common.view")} →</Link>}
               </div>
             </li>
           ))}

@@ -13,6 +13,7 @@ const securityHeaders = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
+  experimental: { serverActions: { bodySizeLimit: "14mb" } },
   eslint: { ignoreDuringBuilds: true },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];

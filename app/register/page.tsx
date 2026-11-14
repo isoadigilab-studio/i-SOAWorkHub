@@ -33,7 +33,7 @@ export default async function RegisterPage({ searchParams }: { searchParams: Pro
         </div>
         <button className="btn btn-primary w-full">{t("nav.register")}</button>
         <p className="text-center text-sm text-muted">
-          {t("auth.have_account")} <Link href={`/login?next=${encodeURIComponent(safeNext(sp.next))}`} className="text-accent hover:underline">{t("nav.login")}</Link>
+          {t("auth.have_account")} <Link href={`/login?next=${encodeURIComponent(safeNext(sp.next))}`} className="text-gold hover:underline">{t("nav.login")}</Link>
         </p>
       </form>
     </div>

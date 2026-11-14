@@ -5,35 +5,42 @@
   "dashboard": "Dashboard",
   "login": "Log in",
   "logout": "Log out",
-  "register": "Join now"
+  "register": "Join now",
+  "tasks": "Tasks",
+  "search": "Search",
+  "history": "History",
+  "wallet": "Wallet"
  },
  "footer": {
-  "about": "Online work offers published by i-SOA DigiLab for invited freelancers.",
+  "about": "Missions, work and ISC payments across the i-SOA network.",
   "platform": "Platform",
   "notice_title": "Important",
-  "notice": "i-SOA WorkHub does not guarantee work or income. You never pay to take part. Payments are made in USDT after your work is approved."
+  "notice": "i-SOA WorkHub does not guarantee work or income. You never pay to take part. Earnings are paid in ISC; withdrawals are paid in crypto after identity verification."
  },
  "common": {
   "save": "Save",
-  "view": "View"
+  "view": "View",
+  "all": "All",
+  "cancel": "Cancel",
+  "view_all": "View all"
  },
  "home": {
-  "hero_title": "Work online with i-SOA DigiLab. Get paid in USDT.",
-  "hero_sub": "We publish design, development and social-media missions. You get an invitation by email, accept the mission, deliver, and receive your share in crypto.",
+  "hero_title": "Find missions. Deliver. Earn ISC.",
+  "hero_sub": "Browse missions from i-SOA DigiLab, deliver your work and get paid in ISC, the wallet currency of the whole i-SOA network.",
   "cta_join": "Create my account",
   "how": "How it works",
-  "step1_title": "Receive an invitation",
-  "step1_text": "We email you a private link to a mission.",
-  "step2_title": "Accept the mission",
-  "step2_text": "Open the link, check the reward, and accept it.",
+  "step1_title": "Find a mission",
+  "step1_text": "Browse open missions or open the private link from your invitation email.",
+  "step2_title": "Accept it",
+  "step2_text": "Check the reward in ISC and accept the mission.",
   "step3_title": "Deliver your work",
   "step3_text": "Send us the link to your finished work.",
-  "step4_title": "Get paid in USDT",
-  "step4_text": "After approval, your share is sent to your crypto wallet.",
+  "step4_title": "Get paid in ISC",
+  "step4_text": "After approval your reward is credited to your i-SOA wallet. Withdraw in crypto when you want.",
   "split_title": "Clear and fair split",
-  "split_text": "For each mission: 50% i-SOA DigiLab, 40% to the freelancer, 10% fees. You always see your exact amount before you accept.",
+  "split_text": "For each mission: 50% i-SOA DigiLab, 40% to the freelancer, 10% fees. You see your exact reward in ISC before you accept.",
   "trust_title": "Trust and safety",
-  "trust_text": "We never ask you for money. Learn how to spot scams and keep your wallet safe."
+  "trust_text": "We never ask you for money. Identity verification protects withdrawals. Learn how to spot scams."
  },
  "safety": {
   "title": "Trust & Safety",
@@ -94,7 +101,29 @@
   "payout_api_error": "NOWPayments refused the payout (see the error under the payout).",
   "payout_created_enter_2fa": "Payout created. Now enter the 2FA code to confirm it.",
   "payout_verify_failed": "2FA verification failed (see the error under the payout).",
-  "payout_processing": "Payout confirmed and processing."
+  "payout_processing": "Payout confirmed and processing.",
+  "kyc_failed": "Could not submit your documents. Please try again.",
+  "kyc_files_missing": "Please add the required documents.",
+  "kyc_not_allowed": "Verification is already in progress or approved.",
+  "kyc_submitted": "Documents submitted. We will review them.",
+  "merchant_key_created": "Merchant key created (shown once below).",
+  "ticket_created": "Ticket created. Copy it now.",
+  "insufficient_funds": "Insufficient ISC balance.",
+  "recipient_not_found": "Recipient wallet ID not found.",
+  "self_transfer": "You cannot send ISC to yourself.",
+  "invalid_amount": "Invalid amount (max 4 decimals).",
+  "invalid_key": "Please reload the page and try again.",
+  "product_not_found": "Product or service not available.",
+  "kyc_required": "Identity verification (KYC) is required first.",
+  "below_minimum": "Minimum withdrawal is 0.02 ISC.",
+  "too_many_open": "You already have 3 withdrawals in progress.",
+  "transfer_done": "Transfer sent.",
+  "payment_done": "Payment done.",
+  "ticket_cancelled": "Ticket cancelled, ISC returned.",
+  "withdraw_requested": "Withdrawal requested. ISC is on hold until payout.",
+  "withdraw_cancelled": "Withdrawal cancelled, ISC returned.",
+  "file_too_large": "File too large (max 4 MB).",
+  "file_type": "Unsupported file type (JPG, PNG, WebP or PDF)."
  },
  "dash": {
   "welcome": "Welcome",
@@ -109,14 +138,23 @@
   "wallet_missing": "Add your crypto wallet to be able to accept missions",
   "none_tasks": "No missions yet. Open the link from your invitation email.",
   "none_notifications": "No notifications.",
-  "mark_read": "Mark all as read"
+  "mark_read": "Mark all as read",
+  "browse": "Browse missions",
+  "completed": "Completed",
+  "hero_text": "Browse open missions, accept the ones that fit your skills, deliver your work and get paid in ISC.",
+  "hero_title": "Find missions. Deliver. Earn ISC.",
+  "in_review": "Under review",
+  "kyc_banner": "Verify your identity (KYC) to be able to withdraw your ISC.",
+  "no_open": "No open missions right now. Check your email for invitations.",
+  "recommended": "Recommended missions",
+  "settings": "Settings"
  },
  "invite": {
   "reward": "Your reward",
   "share": "Your share",
   "deadline": "Deadline",
   "description": "Mission",
-  "no_fee": "No payment is ever required from you. You are paid in USDT after your work is approved.",
+  "no_fee": "No payment is ever required from you. Your reward is credited in ISC after your work is approved.",
   "create_account": "Create account to accept",
   "accept": "Accept this mission"
  },
@@ -127,7 +165,10 @@
   "note": "Note (optional)",
   "submit": "Submit work",
   "waiting_review": "Your work is waiting for review.",
-  "history": "Submissions"
+  "history": "Submissions",
+  "mine": "My missions",
+  "open": "Open missions",
+  "paid": "Approved. Your reward was credited to your ISC wallet."
  },
  "wallet": {
   "help": "Enter the public address where you want to receive USDT.",
@@ -154,7 +195,7 @@
   "assigned": "In progress",
   "submitted": "Under review",
   "approved": "Approved",
-  "paid": "Paid",
+  "paid": "Credited",
   "cancelled": "Cancelled"
  },
  "sub_status": {
@@ -173,6 +214,118 @@
  "notif": {
   "submission_approved": "Your work was approved",
   "submission_rejected": "Your work needs changes",
-  "payout_finished": "Payment sent to your wallet"
+  "payout_finished": "Payment sent to your wallet",
+  "kyc_approved": "Identity verified",
+  "kyc_rejected": "Identity verification rejected",
+  "withdrawal_paid": "Withdrawal paid",
+  "withdrawal_failed": "Withdrawal failed, funds returned"
+ },
+ "history": {
+  "legacy": "Legacy USDT payout",
+  "none": "No activity yet.",
+  "submission": "Work submitted"
+ },
+ "search": {
+  "hint": "Type a keyword or pick a category. Only missions you are allowed to see are searched.",
+  "none": "No results.",
+  "placeholder": "Search missions, skills…"
+ },
+ "settings": {
+  "language": "Language"
+ },
+ "opp": {
+  "category": "Category"
+ },
+ "kyc": {
+  "approved": "Your identity is verified. You can withdraw your ISC.",
+  "back": "Document — back (if any)",
+  "country": "Country",
+  "doc_type": "Document type",
+  "driver_license": "Driver license",
+  "front": "Document — front",
+  "help": "Our team reviews your documents manually. Files are stored privately and only used for verification. JPG, PNG, WebP or PDF, max 4 MB each.",
+  "legal_name": "Full legal name",
+  "national_id": "National ID card",
+  "passport": "Passport",
+  "pending": "Your documents are being reviewed. You will be notified.",
+  "selfie": "Selfie holding the document",
+  "submit": "Submit for review"
+ },
+ "kyc_status": {
+  "none": "Not verified",
+  "pending": "Under review",
+  "approved": "Verified",
+  "rejected": "Rejected"
+ },
+ "ledger": {
+  "earning": "Mission reward",
+  "transfer_out": "Transfer sent",
+  "transfer_in": "Transfer received",
+  "payment": "Payment",
+  "ticket_hold": "Ticket reserved",
+  "ticket_release": "Ticket released",
+  "ticket_payment": "Ticket paid",
+  "withdrawal_hold": "Withdrawal requested",
+  "withdrawal_release": "Withdrawal refunded",
+  "withdrawal_paid": "Withdrawal paid",
+  "adjustment": "Adjustment"
+ },
+ "ticket_status": {
+  "open": "Open",
+  "redeemed": "Used",
+  "expired": "Expired",
+  "cancelled": "Cancelled"
+ },
+ "wd_status": {
+  "requested": "Requested",
+  "processing": "Processing",
+  "paid": "Paid",
+  "failed": "Failed",
+  "cancelled": "Cancelled"
+ },
+ "w": {
+  "tab_overview": "Home",
+  "tab_transfer": "Transfer",
+  "tab_payment": "Payment",
+  "tab_ticket": "Ticket",
+  "tab_withdraw": "Withdraw",
+  "tab_history": "History",
+  "address": "Receiving wallet address",
+  "amount": "Amount (ISC)",
+  "available": "Available",
+  "balance": "Available balance",
+  "confirm_transfer": "Confirm transfer",
+  "earned": "Earned",
+  "expires": "Expires in",
+  "gen_ticket": "Generate ticket",
+  "held": "On hold",
+  "indicative": "indicative value, not a promise of market value",
+  "kyc_go": "Verify my identity",
+  "kyc_needed": "Identity verification (KYC) is required before your first withdrawal.",
+  "kyc_status": "Status",
+  "min_withdraw": "Min. withdrawal",
+  "my_id": "My wallet ID",
+  "my_tickets": "My tickets",
+  "my_wd": "My withdrawals",
+  "network": "i-SOA payment network",
+  "network_label": "Network",
+  "no_products": "No products available yet.",
+  "note": "Note (optional)",
+  "pay_help": "Pay a subscription or product from your ISC balance.",
+  "pay_now": "Pay with ISC",
+  "pending_wd": "withdrawal(s) in progress",
+  "product": "Service / Product",
+  "purpose": "Purpose / order",
+  "recent": "Recent transactions",
+  "recipient": "Recipient wallet ID",
+  "request_wd": "Request withdrawal",
+  "service": "Service",
+  "ticket_help": "Reserve ISC in a one-time ticket bound to a service, a purpose and an expiry. Unused tickets return the ISC to your balance.",
+  "ticket_help2": "Give this code to the i-SOA service at checkout. The service redeems it server-to-server; it cannot be used twice.",
+  "ticket_once": "Your ticket (shown once — copy it now)",
+  "transfer_help": "Send ISC to another WorkHub account. No crypto or blockchain involved.",
+  "wd_amount": "Amount to withdraw (ISC)",
+  "wd_help": "ISC is removed from your wallet and paid in USDT through NOWPayments after admin confirmation. Minimum 0.02 ISC ($2).",
+  "wd_warning": "Check the address and network carefully. Crypto payments cannot be reversed."
  }
 }

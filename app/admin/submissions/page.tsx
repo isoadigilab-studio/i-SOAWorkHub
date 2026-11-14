@@ -22,15 +22,15 @@ export default async function AdminSubmissions({ searchParams }: { searchParams:
         <ul className="space-y-3">
           {(data ?? []).map((s: any) => (
             <li key={s.id} className="card">
-              <p className="font-semibold text-navy">{s.offers?.title}</p>
+              <p className="font-semibold text-ink">{s.offers?.title}</p>
               <p className="text-xs text-muted">{s.freelancer_profiles?.display_name} · {formatDate(s.created_at)} · wallet {s.freelancer_profiles?.wallet_address ? "set" : "MISSING"}</p>
-              <a href={s.url} target="_blank" rel="noopener noreferrer nofollow ugc" className="mt-2 block break-all text-sm text-accent underline">{s.url}</a>
+              <a href={s.url} target="_blank" rel="noopener noreferrer nofollow ugc" className="mt-2 block break-all text-sm text-gold underline">{s.url}</a>
               {s.note && <p className="mt-2 whitespace-pre-line text-sm">{s.note}</p>}
               <form action={reviewSubmission} className="mt-3 space-y-2">
                 <input type="hidden" name="id" value={s.id} />
                 <input className="input" name="review_note" placeholder="Feedback if rejecting (optional)" maxLength={1000} />
                 <div className="flex gap-2">
-                  <button name="decision" value="approve" className="btn btn-primary">Approve → create payout</button>
+                  <button name="decision" value="approve" className="btn btn-primary">Approve → credit ISC</button>
                   <button name="decision" value="reject" className="btn btn-danger">Reject</button>
                 </div>
               </form>

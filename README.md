@@ -1,39 +1,48 @@
 # i-SOA WorkHub — Connect. Work. Grow.
 
-i-SOA DigiLab publishes paid missions (design, development, social media…). Freelancers are **invited by email** with a private link, accept a mission, deliver a URL, and are paid their share in **USDT** via NOWPayments.
-Split per mission: **50% i-SOA · 40% freelancer · 10% fees** (stored per mission in `offer_finance`; the freelancer never sees the client price, only their own amount).
+Missions published by i-SOA DigiLab (invitation-only **or** open to all freelancers), delivered by URL, reviewed by an admin, paid in **ISC** into an in-app wallet. ISC can be transferred between accounts, spent on i-SOA services, held in one-time payment tickets, and withdrawn in crypto (USDT) through **NOWPayments** after **manual KYC**.
 
-**Stack:** Next.js 15 · TypeScript · Tailwind · Supabase (Postgres/Auth/RLS) · Cloudflare Workers (OpenNext) · Brevo (invitation emails) · NOWPayments (crypto payouts).
+**Stack:** Next.js 15 · TypeScript · Tailwind · Supabase (Postgres/Auth/RLS/Storage) · Cloudflare Workers (OpenNext) · Brevo (invitation emails) · NOWPayments (withdrawal payouts).
+
+## Money rules (fixed)
+- **1 USD = 0.01 ISC → 1 ISC = 100 USD.** $2 = 0.02 ISC. **Minimum withdrawal 0.02 ISC.** ISC is the only internal currency; crypto exists only as the withdrawal rail.
+- Mission split (admin-only): 50% i-SOA · 40% freelancer · 10% fees. The freelancer reward is `usd_to_isc(40% of price)`; e.g. a $20 mission pays **0.08 ISC**.
+- Exact decimals: DB `numeric(18,4)`; `lib/isc.ts` uses integer units (1 unit = 0.0001 ISC = 1 US cent). No floating point is persisted.
 
 ## Flow
-1. Admin → **Offers**: create a mission (client price in USD) and publish it.
-2. Admin → **Invite by email**: paste emails; each gets a private link `/i/<token>`.
-3. Freelancer opens the link → creates account / logs in → adds a wallet (Wallet page) → **Accept** (first come, first served).
-4. Freelancer submits a URL to the finished work.
-5. Admin → **Review**: Approve (creates the payout row) or Reject with feedback.
-6. Admin → **Payouts**: **1 · Create payout**, then **2 · enter the 2FA code** (required by NOWPayments) → status updates to Paid with the TX hash.
+1. Admin → Offers: create a mission (client price USD, **visibility invite|open**), publish. Invite-only missions are shared with **email invitations** (`/i/<token>`); open missions appear in every freelancer's Tasks/Search.
+2. Freelancer accepts (first come, first served), delivers a URL. Admin → Review: **Approve** credits ISC **exactly once** (unique ledger index) or Reject with feedback.
+3. Wallet: Home · Transfer (by wallet ID `ISC-XXXXXXXXXX`) · Payment (catalog products) · Ticket (escrowed one-time code redeemed by another i-SOA service) · Withdraw · History.
+4. Withdrawal: needs **KYC approved** (admin reviews documents in `/admin/kyc`). ISC is **held first**; admin → Withdrawals: **1 · Create payout**, **2 · enter NOWPayments 2FA**; status syncs from NOWPayments; failure/rejection refunds the hold. Never marked paid from a client response.
 
-## Setup (once)
-**Supabase SQL Editor**: run, in order, `supabase/migrations/20261112000001_schema.sql`, `…000002_seed_reference_data.sql`, `20261113000001_offers_v3.sql` (skip the ones already run).
-Make yourself admin:
+## Setup
+**Supabase SQL Editor** — run in order: `…20261112000001_schema.sql`, `…000002_seed_reference_data.sql`, `20261113000001_offers_v3.sql`, **`20261114000001_isc_wallet_v4.sql`** (skip those already run). Then make yourself admin:
 ```sql
 update public.profiles set role = 'admin' where id = (select id from auth.users where email = 'YOU@EXAMPLE.COM');
 ```
-**Cloudflare** (Worker name must equal `name` in `wrangler.jsonc`: `isoa-workhub`) → Settings → Variables and secrets:
+**Cloudflare** (Worker `isoa-workhub`) → Settings → Variables and secrets: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL` (variables, Build + Runtime); `BREVO_API_KEY`, `MAIL_FROM`, `NOWPAYMENTS_API_KEY`, `NOWPAYMENTS_EMAIL`, `NOWPAYMENTS_PASSWORD` (**secrets**). The Supabase *service-role* key is **not** used anywhere.
 
-| Name | Type | Notes |
-|---|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL` | Variable (Build + Runtime) | `NEXT_PUBLIC_SITE_URL=https://isoa-workhub.isoa.workers.dev` |
-| `BREVO_API_KEY`, `MAIL_FROM` | **Secret** | Brevo → SMTP & API → API keys; verify `MAIL_FROM` as a sender in Brevo |
-| `NOWPAYMENTS_API_KEY`, `NOWPAYMENTS_EMAIL`, `NOWPAYMENTS_PASSWORD` | **Secret** | NOWPayments dashboard; enable 2FA; fund the custody balance |
+**Other i-SOA services (Shop Game, Intelli-SOA…)**: Admin → Catalog → create products and a **merchant key** per service (shown once, only its hash is stored). The service redeems a customer's ticket server-to-server:
+```
+POST https://YOUR-DOMAIN/api/tickets/redeem
+x-merchant-key: mk_...        { "token": "tk_...", "service": "shop-game", "ref": "order-42" }
+→ { "ok": true, "amount_isc": "0.0100", "purpose": "...", "ticket_id": "..." }
+```
+Errors: `forbidden`, `invalid`, `expired`, `already_used_or_closed`.
 
-**Supabase → Authentication → URL Configuration:** Site URL = `https://isoa-workhub.isoa.workers.dev`, Redirect URLs: `https://isoa-workhub.isoa.workers.dev/**` and `http://localhost:3000/**`.
+## Security design
+- All money moves only through `SECURITY DEFINER` functions (strict `search_path`, `auth.uid()` checks, row locks, idempotency keys). No client insert/update on wallets, ledger, tickets or withdrawals; the ledger is append-only (trigger); balances cannot go negative (CHECK).
+- Internal functions (`_post`, `_ticket_release`, `_withdrawal_release`, `ensure_wallet`) are revoked from every client role.
+- RLS: users see only their own wallet, ledger, tickets, withdrawals and KYC; recipients see transfers addressed to them only by wallet ID (no emails exposed); admin actions are audited.
+- KYC documents live in a **private** Storage bucket (`kyc`), validated by magic bytes (not browser MIME) and viewed by admins through 5-minute signed URLs. Users cannot edit their own KYC status.
+- Withdrawal status is read directly from NOWPayments with our credentials (no inbound webhook to forge). Secrets only in Cloudflare.
+- Rate limiting (DB-backed), security headers, Zod validation, open-redirect protection, ticket token and merchant key stored as SHA-256 hashes.
 
-## Security
-Authorization is enforced by Postgres RLS + guard triggers. Offers are visible only to admin and the assigned freelancer; invitation tokens are 122-bit random and expire in 14 days; payouts are created only by `approve_submission()` and only an admin can start one (atomic status claim prevents double payouts); crypto API secrets live only in Cloudflare secrets; Zod validation, https-only URLs, DB-backed rate limits and security headers are on.
+## Legacy data
+The old direct-USDT `payouts` table is untouched (rows stay readable in each user's History as "Legacy USDT payout"). New approvals no longer create payouts; they credit ISC. The old admin payout screen and its actions were removed.
 
-## Notes / limits
-- NOWPayments payouts require JWT + a 2FA code each time; this app creates the payout and asks you for the code. Verify endpoint details against NOWPayments docs if their API changes.
-- Payouts are sent in the amount shown (USDT = USD 1:1). Network fees depend on your NOWPayments settings (the 10% "fees" bucket is meant to cover them).
-- Payment *from clients* to i-SOA is not automated here (record it yourself before publishing a mission).
-- Typecheck/build were not run in the authoring environment: check the Cloudflare build log after pushing.
+## Honest limits / what to verify before real money
+- Not executed here: `npm install`, `next build`, DB migrations and tests were **not run** in the authoring environment. Run CI, apply the migration on a **test Supabase project**, and run `supabase/tests/wallet_invariants.sql`. Do a real NOWPayments sandbox/test payout before going live.
+- NOWPayments payout needs JWT + 2FA each time, so withdrawals are *semi-automatic* (admin confirms). Their API may require IP whitelisting; Cloudflare Workers have no fixed IP.
+- Single-entry ledger: i-SOA's own revenue from purchases is tracked in `purchases`, not as a platform wallet.
+- Not implemented: admin balance adjustments, daily withdrawal limits, MFA for admins, AML screening, KYC liveness checks, automated browser tests. Operating an internal currency that converts to crypto may require legal/compliance review in your jurisdiction.

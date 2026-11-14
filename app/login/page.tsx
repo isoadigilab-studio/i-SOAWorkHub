@@ -26,8 +26,8 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         </div>
         <button className="btn btn-primary w-full">{t("nav.login")}</button>
         <div className="flex justify-between text-sm">
-          <Link href="/forgot-password" className="text-accent hover:underline">{t("auth.forgot")}</Link>
-          <Link href="/register" className="text-accent hover:underline">{t("nav.register")}</Link>
+          <Link href="/forgot-password" className="text-gold hover:underline">{t("auth.forgot")}</Link>
+          <Link href="/register" className="text-gold hover:underline">{t("nav.register")}</Link>
         </div>
       </form>
     </div>

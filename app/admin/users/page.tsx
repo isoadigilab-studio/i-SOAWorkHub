@@ -32,8 +32,8 @@ export default async function AdminUsers({ searchParams }: { searchParams: Promi
         {(data ?? []).map((u: any) => (
           <li key={u.id} className="card">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="font-semibold text-navy">{u.full_name || "(no name)"}</span>
-              <span className="flex gap-1.5"><span className="tag">{u.role}</span><span className={`tag ${u.status === "suspended" ? "!bg-red-100 !text-red-700" : ""}`}>{u.status}</span></span>
+              <span className="font-semibold text-ink">{u.full_name || "(no name)"}</span>
+              <span className="flex gap-1.5"><span className="tag">{u.role}</span><span className={`tag ${u.status === "suspended" ? "!bg-red-500/15 !text-red-300" : ""}`}>{u.status}</span></span>
             </div>
             <p className="text-xs text-muted">{formatDate(u.created_at)} · {u.id}</p>
             {u.id !== user.id && (

@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { requireRole, requireUser } from "@/lib/auth";
 import { back } from "@/lib/flash";
 import { limit } from "@/lib/rate-limit";
-import { profileSchema, submissionSchema, walletSchema } from "@/lib/validations";
+import { profileSchema, submissionSchema } from "@/lib/validations";
 
 export async function claimOffer(fd: FormData) {
   const token = String(fd.get("token") ?? "").replace(/[^a-z0-9]/gi, "").slice(0, 64);
@@ -18,21 +18,17 @@ export async function claimOffer(fd: FormData) {
   back("/dashboard/tasks", "msg", "offer_accepted");
 }
 
-export async function saveWallet(fd: FormData) {
-  const P = "/dashboard/wallet";
-  const { sb, user } = await requireRole("freelancer", P);
-  const parsed = walletSchema.safeParse(Object.fromEntries(fd));
-  if (!parsed.success) {
-    const bad = parsed.error.issues.some((i) => i.message === "wallet_invalid");
-    back(P, "error", bad ? "wallet_invalid" : "invalid_input");
-  }
-  const { error } = await sb
-    .from("freelancer_profiles")
-    .update({ wallet_network: parsed.data.wallet_network, wallet_address: parsed.data.wallet_address })
-    .eq("user_id", user.id);
-  if (error) back(P, "error", "save_failed");
-  revalidatePath("/dashboard");
-  back(P, "msg", "saved");
+export async function claimOpenOffer(fd: FormData) {
+  const id = String(fd.get("offer_id") ?? "");
+  const path = `/dashboard/tasks/${encodeURIComponent(id)}`;
+  if (!/^[0-9a-f-]{36}$/i.test(id)) back("/dashboard/tasks", "error", "invalid_input");
+  const { sb, user, profile } = await requireUser(path);
+  if (profile.role !== "freelancer") back(path, "error", "freelancer_only");
+  if (!(await limit(sb, "claim", 20, 3600, `:${user.id}`))) back(path, "error", "too_many");
+  const { data, error } = await sb.rpc("claim_open_offer", { p_offer: id });
+  if (error) back(path, "error", "save_failed");
+  if (data !== "ok") back(path, "error", String(data));
+  back(path, "msg", "offer_accepted");
 }
 
 export async function saveProfile(fd: FormData) {
